@@ -1,0 +1,84 @@
+{% extends 'baseRequired.html' %}
+
+{% block navcontent %}
+{% include 'navbar.html' %}
+{% endblock navcontent %}
+
+{% block bodyContent %}
+
+<style>
+    .UNIKCARD {
+        cursor: pointer;
+        transition: 0.3s linear;
+        box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 10%) !important;
+    }
+
+    .UNIKCARD:hover {
+        background-color: peachpuff !important;
+        transform: translateY(-12px);
+        background: #afc5de17;
+        /* color: #fff; */
+        box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
+    }
+
+    .setico-card {
+        height: 50px;
+    }
+
+    .blg-card {
+        transition: 0.3s ease-in-out;
+        border-radius: 10px;
+        background-color: #ddefed;
+        height: 180px;
+        cursor: pointer;
+    }
+
+    .blg-card:hover {
+        transform: scale(1.03);
+    }
+</style>
+
+<div class="container mt-5 pb-5">
+    <div class="row">
+        <div class="col-lg-4 mt-5 text-center">
+            <div class="card border-0 UNIKCARD h-100 p-2 pt-4" style="border-radius: 8px;">
+                <div class="col text-center">
+                    <img class="img-fluid" style="height:280px" src="/media/{{ bk.book_image }}" alt="">
+                    <h5 class="mt-4 text-danger">{{ bk.book_title }}</h5>
+                    <p class="mt-2">{{ bk.book_desc }}</p>
+                </div>
+                <div class="col text-center pb-2">
+                    <!-- <p style="color: #7b00ff!important;text-decoration: none;">Author - {{ bk.book_author }}</p> -->
+                    <a href="/book/{{ bk.id }}/{{ bk.book_title }}" class="mt-2"
+                        style="color: #4285f4!important;">Available Quantity - {{ bk.book_quantity }}<i
+                            class="fa fa-arrow-right text-primary ml-2"></i></a>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+        <div class="col-lg-8 mt-5">
+            <div class="card border-0 shadow h-100 p-2 mt-1 px-3" style="border-radius: 8px;">
+                <h1 class="text-danger">{{ bk.book_title }}</h1>
+                <h5>{{ bk.book_desc }}</h5>
+                <h5>Author : <span class="text-primary">{{ bk.book_author }}</span></h5>
+                <h5>Book Category : <span class="text-primary">{{ bk.book_category }}</span></h5>
+                <p class="mt-1 text-justify"><b>About Book</b> - {{ bk.about_book }}</p>
+                <h5>Book Publication Date : <span class="text-primary mt-2">{{ bk.book_publication_date }}</span></h5>
+                <h5>Available Quantity : <span class="text-primary mt-2">{{ bk.book_quantity }}</span></h5>
+                <div class="row mt-3">
+                    {% if loan.user.id == user.id and loan.return_status == "pending" %}
+                        <a href="/book/return/{{ bk.id }}" class="btn btn-primary mx-3 px-5 py-1">Return</a>
+                        <a href="/book/renew/{{ bk.id }}" class="btn btn-danger mx-3 px-5 py-1">Renew</a>
+                    {% elif bk.book_quantity >= 1 and user.userProfile.books_issued  < 5 %}
+                        <a href="/book/checkOut/{{ bk.id }}" class="btn btn-primary mx-3 px-5 py-1">Check Out</a>
+                        <a href="/book/reserve/{{ bk.id }}" class="btn btn-danger mx-3 px-5 py-1">Reserve</a>
+                    {% else %}
+                        <a href="/book/reserve/{{ bk.id }}" class="btn btn-danger mx-3 px-5 py-1">Reserve</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock bodyContent %}

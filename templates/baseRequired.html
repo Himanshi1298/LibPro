@@ -1,0 +1,208 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Library</title>
+    {% comment %}
+    <!-- Bootstrap CSS --> {% endcomment %}
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="{% static 'maincss/mainProj.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% comment %} <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+        integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous"> {% endcomment %}
+    <!-- FA ICON CDN  -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- custom script and link -->
+
+    <!-- Custom JS -->
+    <!-- script -->
+    <script src="https://kit.fontawesome.com/802c99c42e.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+        </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous">
+        </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    {% comment %} content {% endcomment %}
+    {% block navcontent %} {% endblock navcontent %}
+    {% comment %} content {% endcomment %}
+
+    <!-- Main Body No Offset (code to write the body part) -->
+    <div class="noOffSet">
+        {% block bodyContent-noOffSet %} {% endblock bodyContent-noOffSet %}
+    </div>
+    <!-- Main Body (code to write the body part) -->
+
+
+    <!-- Main Body With Offset (code to write the body part) -->
+    <div class="setoffset">
+        {% block bodyContent %} {% endblock bodyContent %}
+    </div>
+    <!-- Main Body With Offset (code to write the body part) -->
+
+
+    <!-- Footer -->
+    <footer class="page-footer font-small unique-color-dark mt-5">
+
+        <div style=" background-color: #6351ce;">
+            <div class="col-11 mx-auto">
+
+                <!-- Grid row-->
+                <div class="container-fluid row py-4 d-flex align-items-center">
+
+                    <!-- Grid column -->
+                    <div class="col-md-6 col-lg-5 text-center text-md-left mb-4 mb-md-0">
+                        <h5 class="mb-0" style="color: #fff;">Get connected with us on social networks!</h5>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-6 col-lg-7 text-center text-md-right">
+
+                        <!-- Facebook -->
+                        <a href="https://github.com/" class="fb-ic">
+                            <i class="fa fa-facebook-f white-text mr-4"> </i>
+                        </a>
+                        <!-- Twitter -->
+                        <a href="" class="tw-ic">
+                            <i class="fa fa-twitter white-text mr-4"> </i>
+                        </a>
+                        <!-- Google +-->
+                        <a href="" class="gplus-ic">
+                            <i class="fa fa-google-plus white-text mr-4"> </i>
+                        </a>
+                        <!--Linkedin -->
+                        <a href="https://www.linkedin.com/in/neeraj-rana-069261185/" class="li-ic">
+                            <i class="fa fa-linkedin white-text mr-4"> </i>
+                        </a>
+                        <!--Instagram-->
+                        <a href="https://www.instagram.com/neeraj_rana.exe/?hl=en" class="ins-ic">
+                            <i class="fa fa-instagram white-text"> </i>
+                        </a>
+
+                    </div>
+                    <!-- Grid column -->
+
+                </div>
+                <!-- Grid row-->
+
+            </div>
+        </div>
+
+        <!-- Footer Links -->
+        <div class="custom-container mx-auto text-center text-md-left pt-5">
+            <!-- Grid row -->
+            <div class="row mt-3">
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                    <!-- Content -->
+                    <h6 class="text-uppercase font-weight-bold">Himanshi Rana LibPro 0.1.1</h6>
+                    <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                    <p>Library Management System</p>
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <!-- Links -->
+                    <h6 class="text-uppercase font-weight-bold">Products</h6>
+                    <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                    <p>
+                        <a href="#!">C++</a>
+                    </p>
+                    <p>
+                        <a href="#!">Python</a>
+                    </p>
+                    <p>
+                        <a href="#!">Django</a>
+                    </p>
+                    <p>
+                        <a href="#!">MySql</a>
+                    </p>
+
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+
+                    <!-- Links -->
+                    <h6 class="text-uppercase font-weight-bold">Useful links</h6>
+                    <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                    <p>
+                        <a href="/profile">Your Account</a>
+                    </p>
+                    <p>
+                        <a href="#!">Become an Affiliate</a>
+                    </p>
+                    <p>
+                        <a href="#!">Knowledge Base</a>
+                    </p>
+                    <p>
+                        <a href="#!">Help</a>
+                    </p>
+
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+
+                    <!-- Links -->
+                    <h6 class="text-uppercase font-weight-bold">Contact</h6>
+                    <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                    <p>
+                        <i class="fa fa-home mr-3"></i> Mumbai, 401203, India
+                    </p>
+                    <p>
+                        <i class="fa fa-envelope mr-3"></i> ranahimanshi05@gmail.com
+                    </p>
+                    <p>
+                        <i class="fa fa-phone mr-3"></i> + 91 76 66 69 87 84
+                    </p>
+                    <p>
+                        <i class="fa fa-print mr-3"></i> + 91 76 66 69 87 84
+                    </p>
+                </div>
+                <!-- Grid column -->
+
+            </div>
+            <!-- Grid row -->
+
+        </div>
+        <!-- Footer Links -->
+
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">© 2022 Copyright:
+            <a href="#"> Himanshi Rana</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{% static 'mainjs/mainProj.js' %}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js"
+        integrity="sha384-BOsAfwzjNJHrJ8cZidOg56tcQWfp6y72vEJ8xQ9w6Quywb24iOsW913URv1IS4GD" crossorigin="anonymous">
+        </script>
+</body>
+
+</html>

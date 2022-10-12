@@ -1,0 +1,104 @@
+{% extends 'baseRequired.html' %}
+
+{% block navcontent %}
+{% include 'navbar.html' %}
+{% endblock navcontent %}
+
+{% block bodyContent %}
+
+<style>
+    .UNIKCARD {
+        cursor: pointer;
+        transition: 0.3s linear;
+        box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 10%) !important;
+    }
+
+    .UNIKCARD:hover {
+        background-color: peachpuff!important;
+        transform: translateY(-12px);
+        background: #afc5de17;
+        /* color: #fff; */
+        box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
+    }
+
+    .setico-card {
+        height: 50px;
+    }
+
+    .blg-card {
+        transition: 0.3s ease-in-out;
+        border-radius: 10px;
+        background-color: #ddefed;
+        height: 180px;
+        cursor: pointer;
+    }
+
+    .blg-card:hover {
+        transform: scale(1.03);
+    }
+
+    .scrollhai {
+        height: 70vh;
+        overflow-x: auto;
+        text-align: justify;
+        scroll-behavior: smooth;
+    }
+
+    .scrollhai::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollstyle a {
+        color: #000 !important;
+        text-decoration: none;
+    }
+</style>
+
+
+<section class="container-fluid firstitem py-5">
+    <div class="container text-center mt-lg-5" style="min-height: 300px;">
+        <h1 class="head-h1-text">Which Book you wish to read?</h1>
+        <div class="search-container text-center">
+            <form action="/search" method="get">
+                <div class="input-group px-lg-5 mt-3">
+                    <input type="search" class="form-control rounded" placeholder="Search Title, Author & Category"
+                        aria-label="Search" aria-describedby="search-addon" name="query" id="query" />
+                    <button type="submit" class="btn btn-outline-primary ml-2">search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+<section class="container-fluid my-5 pb-5">
+    <div class="custom-container mx-auto mt-4">
+        <div class="col text-center">
+            <h1 class="head-h1-text">Search Result</h1>
+        </div>
+        <div class="mx-auto row mt-4">
+            {% for brk in books %}
+            <div class="col-md-4 col-lg-3 mt-4 text-center">
+                <div class="card border-0 UNIKCARD h-100 p-2 pt-4" style="border-radius: 8px;">
+                    <div class="col text-center">
+                        <img class="img-fluid" src="/media/{{ brk.book_image }}" alt="">
+                        <h5 class="mt-4 text-danger">{{ brk.book_title }}</h5>
+                        <p class="mt-2">{{ brk.book_desc }}</p>
+                    </div>
+                    <div class="col text-center">
+                        <!-- https://www.ncbi.nlm.nih.gov/books/NBK92477/ -->
+                        <a href="#" style="color: #7b00ff!important;text-decoration: none;">Author - {{ brk.book_author }}</a>
+                        <p class="mt-1" style="color:#4285f4;">Available Quantity - {{ brk.book_quantity }}<i
+                                class="fa fa-arrow-right text-primary ml-2"></i></p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <!--  -->
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock bodyContent %}

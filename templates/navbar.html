@@ -1,0 +1,54 @@
+<!-- NAVBAR -->
+    <nav class="navContainer navbars" id="newnav">
+        <div class="brandContainer">
+            <a href="/home" style="padding: 0px;">
+                <img class="brandImg p-2" src="/media/socialLogos/wowMedia.png" alt="">
+            </a>
+            <!-- <span class="brandName">skuller</span> -->
+        </div>
+        <ul class="menusContainer ml-lg-4">
+            <li class="menu" id="feedsAndPosts">
+                <a href="/home" class="nav-alinks">Explore Books</a>
+            </li>
+            <li class="menu">
+                <a class="nav-alinks">Me <svg width="1em" height="1em" viewBox="0 0 16 16"
+                        class="bi bi-caret-down-fill ml-1 mt-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                    </svg>
+                </a>
+                <div class="menuDropdown shadow">
+                    <div class="col text-center">
+                        <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-caret-up-fill setaarownavdp"
+                            fill="#fff" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                        </svg>
+                    </div>
+                    <div class="col">
+                        <div class="dptexts2 pb-2" style="width:250px">
+                            <div class="">
+                                <h1> <img class="mx-2" height="40px" src="/media/{{ user.userProfile.user_profile_image }}" style="border-radius:50%"> {{ user.username }}</h1>
+                                <div class="">
+                                     <a href="profile" class="btn btn-primary py-1" style="font-size:18px">View Profile</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="menu loginContainer">
+                <div class="sign-out">
+                    <a href="{% url 'logout' %}" class="nav-alinks">Sign Out</a>
+                </div>
+            </li>
+
+        </ul>
+
+        <div class="hamburgerContainer " id="hamburger">
+            <span class="stroke stroke1">1</span>
+            <span class="stroke stroke2">2</span>
+            <span class="stroke stroke3">3</span>
+        </div>
+    </nav>
+<!-- NAVBAR -->

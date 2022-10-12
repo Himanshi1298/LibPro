@@ -1,0 +1,353 @@
+{% extends 'baseRequired.html' %}
+
+{% block navcontent %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
+        aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <a class="navbar-brand" href="#">
+            <img src="/media/socialLogos/wowMedia.png
+            " alt="" class="baranImg p-2"></a>
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link h3" href="#">Book</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link h3" href="#">Sign Out</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% endblock navcontent %}
+
+{% block bodyContent %}
+<style>
+    .user-image {
+        background-image: url('/media/{{ foamUser.userProfile.user_profile_image }}');
+        background-size: cover;
+        height: 150px;
+        width: 150px;
+        border-radius: 50%;
+    }
+
+    .adminDisplay>a {
+        color: #447e9b !important;
+        text-decoration: underline !important;
+    }
+</style>
+<div class="container-fluid mx-auto my-5">
+    <div class="main-body">
+        <div class="row mx-auto">
+            <div class="col-lg-2 col-md-4">
+                <div class="card shadow h-100">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <div class="user-image">
+                            </div>
+                            <!-- <img src="/media/userProfileImgs/IMG_20201027_200757_408.jpg" alt="Admin"
+                                class="rounded-circle" width="150"> -->
+                            <div class="mt-3">
+                                <h4>{{ foamUser.first_name }}</h4>
+                                <p class="text-secondary mb-1">{{ foamUser.userProfile.bio }}</p>
+                                <p class="text-muted font-size-sm">{{ foamUser.userProfile.address }}</p>
+                                <h6 class="text-danger"> {{ foamUser.userProfile.books_issued }} Books Issued</h6>
+                            </div>
+                            <div class="mt-5">
+                                <div class="mx-auto row">
+                                    <a href="{{ foamUser.userlinks.github }}" class="mx-2"><img
+                                            src="/media/socialLogos/github.png" alt="github" style="height:40px"></a>
+                                    <a href="{{ foamUser.userlinks.linkdin }}" class="mx-2"><img
+                                            src="/media/socialLogos/linkdin.png" alt="linkdin" style="height:40px"></a>
+                                    <a href="{{ foamUser.userlinks.twitter }}" class="mx-2"><img
+                                            src="/media/socialLogos/twitter.png" alt="twitter" style="height:40px"></a>
+                                    <a href="{{ foamUser.userlinks.website }}" class="mx-2"><img
+                                            src="/media/socialLogos/website.png" alt="instagram"
+                                            style="height:40px"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-5">
+                <div class="card shadow h-100">
+                    <div class="card-body">
+                        <form action="
+                        " method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Username</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <h6>{{ foamUser.username}}</h6>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Name</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    {{ foamUser.first_name }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Email</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <h6>{{ foamUser.email }}</h6>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Bio</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    {{ upForm.bio }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Location</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    {{ upForm.address }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Profile Image</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    {{ upForm.user_profile_image }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <button type="" class="btn btn-info px-3" name="profile-form"
+                                        value="profile-form">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow h-100 p-4">
+                    <h1>Filters</h1>
+                    <ul class="p-3 adminDisplay">
+                        <a href="all">
+                            <li class="h5 mt-3">Books Issued</li>
+                        </a>
+                        <a href="withFine">
+                            <li class="h5 mt-3">Books With Fine</li>
+                        </a>
+                        <a href="pending">
+                            <li class="h5 mt-3">Return Status - Pending</li>
+                        </a>
+                        <a href="returned">
+                            <li class="h5 mt-3">Return Status - Returned</li>
+                        </a>
+                        <a href="/issueFor/{{ foamUser.id}}">
+                            <li class="h5 mt-3 btn btn-success">Issue a book for {{ foamUser.first_name }}</li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .UNIKCARD {
+        cursor: pointer;
+        transition: 0.3s linear;
+        box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 10%) !important;
+    }
+
+    .UNIKCARD:hover {
+        background-color: peachpuff !important;
+        transform: translateY(-12px);
+        background: #afc5de17;
+        /* color: #fff; */
+        box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
+    }
+
+    .setico-card {
+        height: 50px;
+    }
+
+    .blg-card {
+        transition: 0.3s ease-in-out;
+        border-radius: 10px;
+        background-color: #ddefed;
+        height: 180px;
+        cursor: pointer;
+    }
+
+    .blg-card:hover {
+        transform: scale(1.03);
+    }
+
+    .scrollhai {
+        height: 70vh;
+        overflow-x: auto;
+        text-align: justify;
+        scroll-behavior: smooth;
+    }
+
+    .scrollhai::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollstyle a {
+        color: #000 !important;
+        text-decoration: none;
+    }
+</style>
+<div class="container-fluid mx-auto pb-5">
+    <div class="row mx-auto">
+        <div class="col-md-2">
+            <div class="mt-3 shadow">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><img style="height:25px" src="/media/socialLogos/website.png" alt="website"
+                                    class="img-fluid mr-2"></h6>
+                            <span class="text-secondary">{{ ulForm.website }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><img style="height:25px" src="/media/socialLogos/github.png" alt="github"
+                                    class="img-fluid mr-2"></h6>
+                            <span class="text-secondary">{{ ulForm.github }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><img style="height:25px" src="/media/socialLogos/twitter.png" alt="twitter"
+                                    class="img-fluid mr-2"></h6>
+                            <span class="text-secondary">{{ ulForm.twitter }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><img style="height:25px" src="/media/socialLogos/linkdin.png" alt="linkdin"
+                                    class="img-fluid mr-2"></h6>
+                            <span class="text-secondary">{{ ulForm.linkdin }}</span>
+                        </li>
+                    </ul>
+                    <div class="col">
+                        <button type="submit" class="btn btn-info px-3 my-3" name="link-form"
+                            value="link-form">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="col text-center mb-3">
+                <h2>Book Loan Detalis</h2>
+            </div>
+            {% if st == 'all' %}
+            <table class="table table-bordered shadow">
+                <thead>
+                  <tr>
+                    <th>Book Title</th>
+                    <th>Issue Date</th>
+                    <th>ERD</th>
+                    <th>Return Date</th>
+                    <th>Return Status</th>
+                    <th>Fine</th>
+                  </tr>
+                </thead>
+            {% for loan in loanBook %}
+                <tbody>
+                    <tr>
+                    <th class="text-capitalize">{{ loan.book }}</th>
+                    <th class="text-capitalize">{{ loan.issue_date }}</th>
+                    <th class="text-capitalize">{{ loan.estimated_return_date }}</th>
+                    <th class="text-capitalize">{{ loan.return_date }}</th>
+                    <th class="text-capitalize">{{ loan.return_status }}</th>
+                    {% if loan.fine %}
+                    <th class="text-capitalize"><a href="" class="brn btn-danger px-2 py-1" style="border-radius:5px">Pay Fine</a></th>
+                    {% else %}
+                    <th class="text-capitalize">All Good</th>
+                    {% endif %}
+                    </tr>
+                </tbody>
+            {% endfor %}
+            </table>
+            {% elif st == 'pending' %}
+            <table class="table table-bordered shadow">
+                <thead>
+                  <tr>
+                    <th>Book Title</th>
+                    <th>Issue Date</th>
+                    <th>ERD</th>
+                    <th>Return Date</th>
+                    <th>Return Status</th>
+                    <th>Fine</th>
+                  </tr>
+                </thead>
+            {% for loan in loanBook %}
+            {% if loan.return_status == 'pending' %}
+                <tbody>
+                    <tr>
+                    <th class="text-capitalize">{{ loan.book }}</th>
+                    <th class="text-capitalize">{{ loan.issue_date }}</th>
+                    <th class="text-capitalize">{{ loan.estimated_return_date }}</th>
+                    <th class="text-capitalize">{{ loan.return_date }}</th>
+                    <th class="text-capitalize">{{ loan.return_status }}</th>
+                    {% if loan.fine %}
+                    <th class="text-capitalize"><a href="" class="brn btn-danger px-2 py-1" style="border-radius:5px">Pay Fine</a></th>
+                    {% else %}
+                    <th class="text-capitalize">All Good</th>
+                    {% endif %}
+                    </tr>
+                </tbody>
+            {% endif %}
+            {% endfor %}
+            </table>
+            {% elif st == 'returned' %}
+            <table class="table table-bordered shadow">
+                <thead>
+                  <tr>
+                    <th>Book Title</th>
+                    <th>Issue Date</th>
+                    <th>ERD</th>
+                    <th>Return Date</th>
+                    <th>Return Status</th>
+                    <th>Fine</th>
+                  </tr>
+                </thead>
+            
+            {% for loan in loanBook %}
+            {% if loan.return_status == 'returned' %}
+                <tbody>
+                    <tr>
+                    <th class="text-capitalize">{{ loan.book }}</th>
+                    <th class="text-capitalize">{{ loan.issue_date }}</th>
+                    <th class="text-capitalize">{{ loan.estimated_return_date }}</th>
+                    <th class="text-capitalize">{{ loan.return_date }}</th>
+                    <th class="text-capitalize">{{ loan.return_status }}</th>
+                    {% if loan.fine %}
+                    <th class="text-capitalize"><a href="" class="brn btn-danger px-2 py-1" style="border-radius:5px">Pay Fine</a></th>
+                    {% else %}
+                    <th class="text-capitalize">All Good</th>
+                    {% endif %}
+                    </tr>
+                </tbody>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock bodyContent %}
