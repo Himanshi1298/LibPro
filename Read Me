@@ -1,0 +1,5 @@
+ project starts with three applications which are place in allApps Folder
+ book, userAccount, customAdmin are the three apps used in this project 
+ the application userAccount extends the base User model and creates two new models called as userProfiles and userLinks
+ the book application tackels all the book related operations like displya books, issue book, return book, renew book and etc
+ the third application is used for make operation at one page customAdmin where admin can take actions for a user at one panel.
