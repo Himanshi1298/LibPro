@@ -7,15 +7,15 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/adminHome">
             <img src="/media/socialLogos/wowMedia.png
             " alt="" class="baranImg p-2"></a>
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item active">
-                <a class="nav-link h3" href="#">Book</a>
+                <a class="nav-link h3" href="/adminHome">Book</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link h3" href="#">Sign Out</a>
+                <a class="nav-link h3" href="/customAdmin/logout">Sign Out</a>
             </li>
         </ul>
     </div>
@@ -37,29 +37,84 @@
             </div>
             <div class="p-2">
                 <p class="mt-1 h6 adminDisplay">
-                    <a href="/adminHome/userAccounts/userProfiles/">
+                    <a href="/adminHome/userAccounts/userProfiles/listDisplay">
                         User Profiles
                     </a>
                 </p>
-                <p class="mt-1 h6 adminDisplay">
-                    <a href="/adminHome/userAccounts/userLinks/">
-                        User Links
-                    </a>
-                </p>
+            </div>
+            <div>
+                <h3>Books :-</h3>
+            </div>
+            <div class="p-2">
+                <div class="mt-1 row">
+                    <div class="adminDisplay ml-2 h6">
+                        <a href="/adminHome/book/bookCategories/listDisplay">
+                            Book Categories
+                        </a>
+                    </div>
+                    <div class="float-right h6">
+                        <a href="/adminHome/book/bookCategories/add" class="ml-1"
+                            style="background-color: #447e9b;border-radius: 8px;color:aliceblue">
+                            + Add
+                        </a>
+                    </div>
+                </div>
+                <div class="mt-1 adminDisplay row">
+                    <div class="adminDisplay ml-2 h6">
+                        <a href="/adminHome/book/bookFinePayment/listDisplay">
+                            Book Fine Pay Details
+                        </a>
+                    </div>
+                </div>
+                <div class="mt-1 adminDisplay row">
+                    <div class="adminDisplay ml-2 h6">
+                        <a href="/adminHome/book/bookFines/listDisplay">
+                            Book Fines
+                        </a>
+                    </div>
+                </div>
+                <div class="mt-1 adminDisplay row">
+                    <div class="adminDisplay ml-2 h6">
+                        <a href="/adminHome/book/bookLoan/listDisplay">
+                            Book Loan Details
+                        </a>
+                    </div>
+                </div>
+                <div class="mt-1 adminDisplay row">
+                    <div class="adminDisplay ml-2 h6">
+                        <a href="/adminHome/book/bookReservation/listDisplay">
+                            Book Reservation Details
+                        </a>
+                    </div>
+                </div>
+                <div class="mt-1 adminDisplay row">
+                    <div class="adminDisplay ml-2 h6">
+                        <a href="/adminHome/book/book/listDisplay">
+                            Books
+                        </a>
+                    </div>
+                    <div class="float-right h6">
+                        <a href="/adminHome/book/book/add" class="ml-1"
+                            style="background-color: #447e9b;border-radius: 8px;color:aliceblue">
+                            + Add
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <div class="col-lg-8">
         <div class="card border-1 UNIKCARD h-100 p-2" style="border-radius: 8px;">
+            {% if appModule == 'bookCategories' %}
             <div class="row">
                 <div class="p-3">
-                    <h3>Select {{ appModule }} To Change</h3>
+                    <h3>Select Book Catogaries To Change</h3>
                 </div>
-                <div>
-                    <form action="searchUser" method="get">
+                <div class="col">
+                    <form action="/adminHome/search/bookCategories/" method="get">
                         <div class="input-group px-lg-5 mt-3">
-                            <input type="search" class="form-control rounded" placeholder="Search User"
-                                aria-label="Search" aria-describedby="search-addon" name="query" id="query"/>
+                            <input type="search" class="form-control rounded" placeholder="Search Categoriy Name"
+                                aria-label="Search" aria-describedby="search-addon" name="query" id="query" />
                             <button type="submit" class="btn btn-outline-primary ml-2">search</button>
                         </div>
                     </form>
@@ -67,79 +122,497 @@
             </div>
             <div class="p-2">
                 <table class="table">
-                    <thead class="">
-                        {% for us in allUser %}
-                        {% if appModule == 'userProfiles' %}
+                    <thead>
                         <tr>
-                            <th class="adminDisplay py-1">
-                                <a href="/adminHome/userAccounts/{{ appModule }}/{{  us.pk }}/all">{{ us.username }}</a>
-                            </th>
+                            <th>Book Category</th>
+                            <th class="text-center">Category Name</th>
+                            <th></th>
                         </tr>
-                        {% else %}
-                        <tr>
-                            <th class="adminDisplay py-1">
-                                <a href="/adminHome/userAccounts/{{ appModule }}/{{  us.pk }}/all">{{ us.username }}</a>
-                            </th>
-                        </tr>
-                        {% endif %}
-                        {% endfor %}
                     </thead>
+                    <tbody>
+                        {% for category in bookCat %}
+                        <tr>
+                            <th class="text-capatilize adminDisplay"> <a
+                                    href="/adminHome/book/{{ appModule }}/{{ category.id }}/change">{{ category.name }}</a>
+                            </th>
+                            <th class="text-capatilize adminDisplay text-center">{{ category.createdOn }}</th>
+                            <th>
+                                <button class="btn btn-danger py-1 px-4" data-toggle="modal"
+                                    data-target="#adminDeleteCat{{ category.pk }}">Delete</button>
+                            </th>
+                        </tr>
+
+                        <!-- Modal delete -->
+                        <div class="modal fade" id="adminDeleteCat{{ category.pk }}" tabindex="-1" role="dialog"
+                            aria-labelledby="adminDeleteCatModel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-primary" id="exampleModalLongTitle">Delete Category {{ category.name }}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="col text-danger h6">
+                                            Are you sure, you want to delete the category {{ category.name }}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <a href="/adminHome/delete/{{ appModule }}/{{ category.pk }}"
+                                            class="btn btn-danger">Save changes</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
                 </table>
             </div>
-        </div>
-    </div>
-    <div class="col-lg-4 allBooks mt-3">
-        <div class="card border-1 UNIKCARD h-100 p-2" style="border-radius: 8px;">
-            <div>
-                <h3>Books :-</h3>
+            {% elif appModule == 'bookFinePayment' %}
+            <div class="row">
+                <div class="p-3">
+                    <h3>Book Fine Payment Details</h3>
+                </div>
+                <div class="col">
+                    <form action="/adminHome/search/bookFinePayment" method="get">
+                        <div class="input-group px-lg-5 mt-3">
+                            <input type="search" class="form-control rounded" placeholder="Search User, book"
+                                aria-label="Search" aria-describedby="search-addon" name="query" id="query" />
+                            <button type="submit" class="btn btn-outline-primary ml-2">search</button>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="p-2">
-                <div class="mt-1 row">
-                    <div class="adminDisplay ml-2 h6">
-                        <a href="/adminHome/book/bookCategories/">
-                            Book Categories
-                        </a>
-                    </div>
-                    <div class="float-right h6">
-                        <a href="/adminHome/book/bookCategories/add" class="ml-1" style="background-color: #447e9b;border-radius: 8px;color:aliceblue">
-                            + Add
-                        </a>
-                    </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th class="text-center">Book</th>
+                            <th class="text-center">Payment Date</th>
+                            <th class="text-center">Mode Of Payment</th>
+                            <th class="text-center">Transaction ID</th>
+                            <th class="text-center">Payment Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bfp in bookFinePayment %}
+                        <tr>
+                            <th class="text-capatilize adminDisplay"> <a
+                                    href="adminHome/userAccounts/userProfiles/change/{{ bfp.user.id }}/all/">{{ bfp.user
+                                    }}</a>
+                            </th>
+                            <th class="text-capatilize adminDisplay text-center"> </th>
+                            <th class="text-capatilize text-center"> </th>
+                            <th class="text-capatilize text-center"> </th>
+                            <th class="text-capatilize text-center"> </th>
+                            <th class="text-capatilize text-center"> </th>
+                            <th>
+                                <button class="btn btn-danger py-1 px-4" data-toggle="modal"
+                                    data-target="#adminDeletebfpd{{ bfp.pk }}">Delete</button>
+                            </th>
+                        </tr>
+                        <!-- Modal delete -->
+                        <div class="modal fade" id="adminDeletebfpd{{ bfp.pk }}" tabindex="-1" role="dialog"
+                            aria-labelledby="adminDeletebfpdModel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-primary" id="exampleModalLongTitle">Delete Fine Payment Detais For {{ foamUser.username }}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="col text-danger h6">
+                                            Are you sure, you want to delete the fine payment details for {{ bfp.user }}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <a href="/adminHome/delete/{{ appModule }}/{{ bfp.pk }}"
+                                            class="btn btn-danger disabled">Save changes</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% elif appModule == 'bookFines' %}
+            <div class="row">
+                <div class="p-3">
+                    <h3>Book Fines Details</h3>
                 </div>
-                <div class="mt-1 adminDisplay row">
-                    <div class="adminDisplay ml-2 h6">
-                        <a href="/adminHome/book/bookFinePayment/">
-                            Book fine pay details
-                        </a>
-                    </div>
-                </div>
-                <div class="mt-1 adminDisplay row">
-                    <div class="adminDisplay ml-2 h6">
-                        <a href="/adminHome/book/bookFines/">
-                            Book fines
-                        </a>
-                    </div>
-                </div>
-                <div class="mt-1 adminDisplay row">
-                    <div class="adminDisplay ml-2 h6">
-                        <a href="/adminHome/book/bookLoan/">
-                            Book loan details
-                        </a>
-                    </div>
-                </div>
-                <div class="mt-1 adminDisplay row">
-                    <div class="adminDisplay ml-2 h6">
-                        <a href="/adminHome/book/book/">
-                            Books
-                        </a>
-                    </div>
-                    <div class="float-right h6">
-                        <a href="/adminHome/book/book/add" class="ml-1" style="background-color: #447e9b;border-radius: 8px;color:aliceblue">
-                            + Add
-                        </a>
-                    </div>
+                <div class="col">
+                    <form action="/adminHome/search/bookFines" method="get">
+                        <div class="input-group px-lg-5 mt-3">
+                            <input type="search" class="form-control rounded" placeholder="Search User, Book"
+                                aria-label="Search" aria-describedby="search-addon" name="query" id="query" />
+                            <button type="submit" class="btn btn-outline-primary ml-2">search</button>
+                        </div>
+                    </form>
                 </div>
             </div>
+            <div class="p-2">
+                <table class="table">
+                    <thead>
+                        <p class="text-danger"><b>NOTE: To recive a payment please go to user profile by clicking on the
+                                username</b></p>
+                        <tr>
+                            <th>User</th>
+                            <th>Book</th>
+                            <th>Fine Ammount</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bfine in bkFine %}
+                        <tr>
+                            <th class="adminDisplay">
+                                <a href="/adminHome/userAccounts/userProfiles/change/{{ bfine.user.id }}/withFine/">{{ bfine.user }}</a>
+                            </th>
+                            <th class="adminDisplay">{{ bfine.loan.book }}</th>
+                            <th>₹{{ bfine.fine }}/-
+                            </th>
+                             <th>
+                                <button class="btn btn-primary py-1 px-4" data-toggle="modal"
+                                    data-target="#adminDeleteBookFines{{ bfine.pk }}">Delete</button>
+                            </th>
+                        </tr>
+                        <!-- Modal delete -->
+                        <div class="modal fade" id="adminDeleteBookFines{{ bfine.pk }}" tabindex="-1" role="dialog"
+                            aria-labelledby="adminDeleteBookFinesModel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-primary" id="exampleModalLongTitle">Delete Fine {{ bfine.user }}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="col text-danger h6">
+                                            Are you sure, you want to delete the fine for user {{ bfine.user }} related to the book {{ bfine.loan.book }}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <a href="/adminHome/delete/{{ appModule }}/{{ bfine.pk }}"
+                                            class="btn btn-danger disabled">Save changes</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% elif appModule == 'bookReservation' %}
+            <div class="row">
+                <div class="p-3">
+                    <h3>Book Reservation Details</h3>
+                </div>
+                <div class="col">
+                    <form action="/adminHome/search/bookReservation" method="get">
+                        <div class="input-group px-lg-5 mt-3">
+                            <input type="search" class="form-control rounded" placeholder="Search User, Book"
+                                aria-label="Search" aria-describedby="search-addon" name="query" id="query" />
+                            <button type="submit" class="btn btn-outline-primary ml-2">search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="p-2">
+                <table class="table">
+                    <thead>
+                        <p class="text-danger"><b></b></p>
+                        <tr>
+                            <th>User</th>
+                            <th>Book</th>
+                            <th class="text-center">Reservation Date</th>
+                            <th class="text-center">Reservation Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for brs in br %}
+                        <tr>
+                            <th class="adminDisplay">
+                                <a href="/adminHome/userAccounts/userProfiles/change/{{ brs.user.id }}/withFine/">{{ brs.user }}</a>
+                            </th>
+                            <th class="adminDisplay">{{ brs.book }}</th>
+                            <th class="text-center">{{ brs.reservation_date }}</th>
+                            <th class="text-capitalize text-center">{{ brs.reservation_status }}</th>
+                            <th>
+                                <button class="btn btn-danger py-1 px-4" data-toggle="modal"
+                                    data-target="#adminDeleteBr{{ brs.pk }}">Delete</button>
+                            </th>
+                        </tr>
+                        <!-- delete model -->
+                        <div class="modal fade" id="adminDeleteBr{{ brs.pk }}" tabindex="-1" role="dialog"
+                            aria-labelledby="adminDeleteBrModel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-primary" id="exampleModalLongTitle">Cancle Reservation For {{ brs.user }}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="col text-danger h6">
+                                            Are you sure, you want to cancle the reservation for user {{ brs.user }} related to the book {{ brs.book }}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <a href="/adminHome/delete/{{ appModule }}/{{ brs.pk }}"
+                                            class="btn btn-danger">Save changes</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% elif appModule == 'bookLoan' %}
+            <div class="row">
+                <div class="p-3">
+                    <h3>Select Book Loan Details To Change</h3>
+                </div>
+                <div class="col">
+                    <form action="/adminHome/search/bookLoan" method="get">
+                        <div class="input-group px-lg-5 mt-3">
+                            <input type="search" class="form-control rounded" placeholder="Search User, Book"
+                                aria-label="Search" aria-describedby="search-addon" name="query" id="query" />
+                            <button type="submit" class="btn btn-outline-primary ml-2">search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="p-2">
+                <table class="table">
+                    <p class="text-danger"><b>NOTE: To perform any action or changes for book loan, please click on the
+                            username.</b></p>
+                    <thead>
+                        <tr>
+                            <th>Book Title</th>
+                            <th>User Name</th>
+                            <th>Issue Date</th>
+                            <th>ERD</th>
+                            <th>Return Date</th>
+                            <th>Return Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for loan in loanDetail %}
+                        <tr>
+                            <th>{{ loan.book }}</th>
+                            <th class="adminDisplay"><a
+                                    href="/adminHome/userAccounts/userProfiles/change/{{ loan.user.id }}/all/">{{ loan.user }}</a></th>
+                            <th>{{ loan.issue_date }}</th>
+                            <th>{{ loan.estimated_return_date }}</th>
+                            <th>{{ loan.return_date }}</th>
+                            {% if loan.return_status == 'pending' %}
+                            <th class="text-capitalize text-center text-danger">{{ loan.return_status }}</th>
+                            {% else %}
+                            <th class="text-capitalize text-center text-success">{{ loan.return_status }}</th>
+                            {% endif %}
+                            <th>
+                                <button class="btn btn-danger py-1 px-4" data-toggle="modal"
+                                    data-target="#adminDeleteLoanDetails{{ loan.pk }}">Delete</button>
+                            </th>
+                        </tr>
+                        <!-- delete model -->
+                        <div class="modal fade" id="adminDeleteLoanDetails{{ loan.pk }}" tabindex="-1" role="dialog"
+                            aria-labelledby="adminDeleteLoanDetailsModel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-primary" id="exampleModalLongTitle">Delete Loan Details For {{ loan.user }}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="col text-danger h6">
+                                            Are you sure, you want to delete the loan for user {{ loan.user }} related to the book {{ loan.book }}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <a href="/adminHome/delete/{{ appModule }}/{{ loan.pk }}"
+                                            class="btn btn-danger disabled">Save changes</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% elif appModule == 'book' %}
+            <div class="row">
+                <div class="p-3">
+                    <h3>Select Book Details To Change</h3>
+                </div>
+                <div class="col">
+                    <form action="/adminHome/search/book" method="get">
+                        <div class="input-group px-lg-5 mt-3">
+                            <input type="search" class="form-control rounded"
+                                placeholder="Search Title, Author, Category" aria-label="Search"
+                                aria-describedby="search-addon" name="query" id="query" />
+                            <button type="submit" class="btn btn-outline-primary ml-2">search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="p-2">
+                <table class="table">
+                    <p class="text-danger"><b>NOTE: To perform any action or changes for book, please click on the
+                            Book.</b></p>
+                    <thead>
+                        <tr>
+                            <th>Book Title</th>
+                            <th>Book Category</th>
+                            <th>Author</th>
+                            <th class="text-center">Availabe Quantity</th>
+                            <th class="text-center">Publication Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for book in allBook %}
+                        <tr>
+                            <th class="adminDisplay">
+                                <a href="/adminHome/book/{{ appModule }}/{{ book.id }}/change">{{ book.book_title }}</a>
+                            </th>
+                            <th>{{ book.book_category }}</th>
+                            <th>{{ book.book_author }}</th>
+                            <th class="text-center">{{ book.book_quantity }}</th>
+                            <th class="text-center">{{ book.book_publication_date }}</th>
+                            <th>
+                                <button class="btn btn-danger py-1 px-4" data-toggle="modal"
+                                    data-target="#adminDeleteBook{{ book.pk }}">Delete</button>
+                            </th>
+                        </tr>
+                        <!-- delete model -->
+                        <div class="modal fade" id="adminDeleteBook{{ book.pk }}" tabindex="-1" role="dialog"
+                            aria-labelledby="adminDeleteBookModel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-primary" id="exampleModalLongTitle">Delete books {{ book.book_title }}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="col text-danger h6">
+                                            Are you sure, you want to delete the books {{ book.book_title }}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <a href="/adminHome/delete/{{ appModule }}/{{ book.pk }}"
+                                            class="btn btn-danger">Save changes</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% elif appModule == 'userProfiles' %}
+            <div class="row">
+                <div class="p-3">
+                    <h3>Select User To Change</h3>
+                </div>
+                <div class="col">
+                    <form action="/adminHome/search/userProfiles" method="get">
+                        <div class="input-group px-lg-5 mt-3">
+                            <input type="search" class="form-control rounded" placeholder="Search User"
+                                aria-label="Search" aria-describedby="search-addon" name="query" id="query" />
+                                <button type="submit" class="btn btn-outline-primary ml-2">search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="p-2">
+                <table class="table">
+                    <p class="text-danger"><b>NOTE: To perform any action or changes on User, please click on the
+                            user.</b></p>
+                    <thead>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th class="text-center">Is Active</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        {% for us in allUser %}
+                        <tr>
+                            <th class="adminDisplay">
+                                <a href="/adminHome/userAccounts/{{ appModule }}/change/{{  us.pk }}/all">{{ us.username }}</a>
+                            </th>
+                            <th>{{ us.email }}</th>
+                            <th class="text-center">{{ us.is_active }}</th>
+                            <th>
+                                <button class="btn btn-danger py-1 px-4" data-toggle="modal"
+                                    data-target="#adminDeleteUser{{ us.pk }}">Delete</button>
+                            </th>
+                        </tr>
+                        <!-- delete model -->
+                        <div class="modal fade" id="adminDeleteUser{{ us.pk }}" tabindex="-1" role="dialog"
+                            aria-labelledby="adminDeleteUserModel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-primary" id="exampleModalLongTitle">Delete User {{ us.user }}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="col text-danger h6">
+                                            Are you sure, you want to delete the user {{ us.username }}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <a href="/adminHome/delete/{{ appModule }}/{{ us.pk }}"
+                                            class="btn btn-danger">Save changes</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

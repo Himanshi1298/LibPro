@@ -43,7 +43,7 @@
         <div class="col-lg-4 mt-5 text-center">
             <div class="card border-0 UNIKCARD h-100 p-2 pt-4" style="border-radius: 8px;">
                 <div class="col text-center">
-                    <img class="img-fluid" style="height:280px" src="/media/{{ bk.book_image }}" alt="">
+                    <img class="img-fluid" style="height:280px" src="/media/{{ bk.book_image }}" alt="{{ bk.book_title }}">
                     <h5 class="mt-4 text-danger">{{ bk.book_title }}</h5>
                     <p class="mt-2">{{ bk.book_desc }}</p>
                 </div>
@@ -71,7 +71,6 @@
                         <a href="/book/renew/{{ bk.id }}" class="btn btn-danger mx-3 px-5 py-1">Renew</a>
                     {% elif bk.book_quantity >= 1 and user.userProfile.books_issued  < 5 %}
                         <a href="/book/checkOut/{{ bk.id }}" class="btn btn-primary mx-3 px-5 py-1">Check Out</a>
-                        <a href="/book/reserve/{{ bk.id }}" class="btn btn-danger mx-3 px-5 py-1">Reserve</a>
                     {% else %}
                         <a href="/book/reserve/{{ bk.id }}" class="btn btn-danger mx-3 px-5 py-1">Reserve</a>
                     {% endif %}

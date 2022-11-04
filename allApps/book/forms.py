@@ -19,10 +19,12 @@ class curdBookCategories(forms.ModelForm):
 class curdBookForm(forms.ModelForm):
     class Meta:
         model = book
-        fields = ['book_title', 'book_desc', 'book_image', 'book_author', 'book_category', 'book_publication_date', 'book_quantity']
+        fields = ['book_title', 'book_desc', 'bookIsbn', 'about_book' , 'book_image', 'book_author', 'book_category', 'book_publication_date', 'book_quantity']
         widgets = {
              'book_title': forms.TextInput(attrs={'class': 'form-control', 'type': 'mobile', 'placeholder': 'Book Title'}),
              'book_desc': forms.TextInput(attrs={'class': 'form-control', 'type': 'textarea', 'placeholder': 'Book Description'}),
+             'bookIsbn': forms.TextInput(attrs={'class': 'form-control', 'type': 'textarea', 'placeholder': 'Book ISBN'}),
+             'about_book': forms.TextInput(attrs={'class': 'form-control text-area', 'type': 'textarea', 'placeholder': 'About Book'}),
              'book_author': forms.TextInput(attrs={'class': 'form-control', 'type': 'text', 'placeholder': 'Author'}),
          }
 

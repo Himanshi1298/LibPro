@@ -32,9 +32,9 @@ class extendedProfileForm(forms.ModelForm):
         model = userProfiles
         fields = ['phone', 'address', 'bio', 'user_profile_image']
         widgets = {
-             'phone': forms.TextInput(attrs={'class': 'form-control mt-3', 'type': 'mobile', 'placeholder': 'Phone'}),
-             'address': forms.EmailInput(attrs={'class': 'form-control mt-3', 'type': 'textarea', 'placeholder': 'Address'}),
-             'bio': forms.TextInput(attrs={'class': 'form-control mt-3', 'type': 'text', 'placeholder': 'Bio...'}),
+             'phone': forms.TextInput(attrs={'class': 'form-control', 'type': 'mobile', 'placeholder': 'Phone'}),
+             'address': forms.EmailInput(attrs={'class': 'form-control', 'type': 'textarea', 'placeholder': 'Address'}),
+             'bio': forms.TextInput(attrs={'class': 'form-control', 'type': 'text', 'placeholder': 'Bio...'}),
          }
 
 class userLinksForm(forms.ModelForm):

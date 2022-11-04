@@ -1,0 +1,88 @@
+{% extends 'baseRequired.html' %}
+
+{% block navcontent %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
+        aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <a class="navbar-brand" href="/adminHome">
+            <img src="/media/socialLogos/wowMedia.png
+            " alt="" class="baranImg p-2"></a>
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link h3" href="/adminHome">Book</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link h3" href="/customAdmin/logout/">Sign Out</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% endblock navcontent %}
+
+{% block bodyContent %}
+
+<div class="container-fluid my-5">
+    <div class="container">
+        <div class="col text-center">
+            <h1>Issue For {{ foamUser.first_name }}</h1>
+        </div>
+        <div class="col">
+            <form action="/adminHome/search/bookSearch" method="get">
+                <div class="input-group px-lg-5 mt-3">
+                    <input type="search" class="form-control rounded" placeholder="Search Book To Issue"
+                        aria-label="Search" aria-describedby="search-addon" name="query" id="query" />
+                    <button type="submit" class="btn btn-outline-primary ml-2">search</button>
+                </div>
+                <div class="col text-center mt-2">
+                    {% for msg in messages %}
+                        <h2>{{ msg }}</h2>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <style>
+        .table th{
+            vertical-align: center!important;
+        }
+    </style>
+    
+    <div class="col-10 mx-auto shadow card mt-5">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Book Name</th>
+                        <th>Book Category</th>
+                        <th class="text-center">Book Barcode</th>
+                        <th>Book Author Name</th>
+                        <th class="text-center">Available Quantity</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in bk %}
+                        <tr>
+                            <th>{{ book.book_title }}</th>
+                            <th>{{ book.book_category }}</th>
+                            <th class="text-center"><img src="/media/{{ book.book_barcode }}" alt="" class="img-fluid" style="height: 100px;width:100%"></th>
+                            <th>{{ book.book_author }}</th>
+                            <th class="text-center">{{ book.book_quantity }}</th>
+                            {% if book.book_quantity == 0 %}
+                            <th class="text-center"><a href="/adminHome/reserveBookFor/user/{{ foamUser.id }}/{{ book.pk }}" class="btn btn-success py- px-4">Reserve Book</a></th>
+                            {% else %}
+                            <th class="text-center"><a href="/adminHome/issueBookFor/user/{{ foamUser.id }}/{{ book.pk }}" class="btn btn-primary py- px-4">Issue Book</a></th>
+                            {% endif %}
+                        </tr> 
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock bodyContent %}

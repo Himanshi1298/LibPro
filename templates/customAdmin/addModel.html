@@ -12,10 +12,10 @@
             " alt="" class="baranImg p-2"></a>
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item active">
-                <a class="nav-link h3" href="#">Book</a>
+                <a class="nav-link h3" href="/adminHome">Book</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link h3" href="#">Sign Out</a>
+                <a class="nav-link h3" href="/customAdmin/logout">Sign Out</a>
             </li>
         </ul>
     </div>
@@ -28,12 +28,23 @@
     <div class="col text-center">
         <h1>Add {{ appModule }}</h1>
     </div>
+    {% if appModule == 'bookCategories' %}
     <div class="col pb-5">
         <form action="" method="POST">
-            {% csrf_token %}
-            {{ bookForm.as_p }}
+            {% csrf_token %} 
+            {{ bookCatForm.as_p }}
+            <button class="btn btn-outline-success px-4 py-1" type="submit" name="bookCat">Submit</button>
         </form>
     </div>
+    {% elif appModule == 'book' %}
+    <div class="col pb-5">
+        <form action="" method="POST" enctype='multipart/form-data'>
+            {% csrf_token %}
+            {{ bookForm.as_p }}
+            <button class="btn btn-outline-success px-4 py-1" type="submit" name="book">Submit</button>
+        </form>
+    </div>
+    {% endif %}
 </div>
 
 {% endblock bodyContent %}

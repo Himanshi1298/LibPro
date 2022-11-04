@@ -15,57 +15,16 @@
     }
 </style>
 <style>
-    .UNIKCARD {
-        cursor: pointer;
-        transition: 0.3s linear;
-        box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 10%) !important;
-    }
-
-    .UNIKCARD:hover {
-        background-color: peachpuff !important;
-        transform: translateY(-12px);
-        background: #afc5de17;
-        /* color: #fff; */
-        box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
-    }
-
-    .setico-card {
-        height: 50px;
-    }
-
-    .blg-card {
-        transition: 0.3s ease-in-out;
-        border-radius: 10px;
-        background-color: #ddefed;
-        height: 180px;
-        cursor: pointer;
-    }
-
-    .blg-card:hover {
-        transform: scale(1.03);
-    }
-
-    .scrollhai {
-        height: 70vh;
-        overflow-x: auto;
-        text-align: justify;
-        scroll-behavior: smooth;
-    }
-
-    .scrollhai::-webkit-scrollbar {
-        display: none;
-    }
-
-    .scrollstyle a {
-        color: #000 !important;
-        text-decoration: none;
+    .adminDisplay>a {
+        color: #447e9b !important;
+        text-decoration: underline !important;
     }
 </style>
 
-<div class="container my-5">
+<div class="col-11 mx-auto my-5">
     <div class="main-body">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-xl-3 col-lg-4 col-md-5 col">
                 <div class="card shadow h-100">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
@@ -79,6 +38,10 @@
                                 <p class="text-secondary mb-1">{{ user.userProfile.bio }}</p>
                                 <p class="text-muted font-size-sm">{{ user.userProfile.address }}</p>
                                 <h6 class="text-danger">{{ user.userProfile.books_issued }} Books Issued</h6>
+                            </div>
+                            <div class="col">
+                                <img src="{{ user.userProfile.qrcode.url }}
+                                " alt="" style="max-height: 150px;" class="img-fluid">
                             </div>
                             <div class="mt-5">
                                 <div class="mx-auto row">
@@ -97,7 +60,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-xl-5 col-lg-5 col-md-7">
                 <div class="card shadow h-100">
                     <div class="card-body">
                         <form action="
@@ -152,8 +115,7 @@
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Profile Image</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">
-
+                                <div class="col-sm-9 text-secondary adminDisplay">
                                     {{ form2.user_profile_image }}
                                 </div>
                             </div>
@@ -168,12 +130,31 @@
                     </div>
                 </div>
             </div>
+            <div class="col-xl-4 col-lg-3 col-md-12 mt-md-0 mt-5">
+                <div class="card shadow h-100 p-4">
+                    <h1>Filters</h1>
+                    <ul class="p-3 adminDisplay">
+                        <a href="/profile/loanDetails/all">
+                            <li class="h5 mt-3">Books Issued</li>
+                        </a>
+                        <a href="/profile/loanDetails/withFine">
+                            <li class="h5 mt-3">Books With Fine</li>
+                        </a>
+                        <a href="/profile/loanDetails/pending">
+                            <li class="h5 mt-3">Return Status - Pending</li>
+                        </a>
+                        <a href="/profile/loanDetails/returned">
+                            <li class="h5 mt-3">Return Status - Returned</li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<div class="container pb-5">
+<div class="col-11 mx-auto pb-5">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-xl-3 col-lg-4">
             <div class="card mt-3 shadow">
                 <form action="" method="POST">
                     {% csrf_token %}
@@ -206,28 +187,285 @@
                 </form>
             </div>
         </div>
-        <div class="col-md-8 row">
-            {% for pk in profileBook %}
-                {% for book in bk %}
-                    {% if pk.book_id == book.pk %}
-                    <div class="col-md-6 mt-5 text-center">
-                        <div class="card border-0 UNIKCARD h-100 p-2" style="border-radius: 8px;">
-                            <div class="col text-center">
-                                <h6 class="text-danger text-capitalize">Return Status - {{pk.return_status }}</h6>
-                                <img class="img-fluid" style="height:280px" src="/media/{{ book.book_image }}" alt="">
-                                <h5 class="mt-4 text-danger">{{ book.book_title }}</h5>
-                                <p class="mt-2">{{ book.book_desc }}</p>
+        <div class="col-xl-9 col-lg-8 mt-5 mt-lg-0 row">
+            <div class="col text-center mb-3">
+                <h2>Book Loan Detalis</h2>
+                {% for msg in messages %}
+                <h6 class="mt-4">{{ msg }}</h6>
+                {% endfor %}
+            </div>
+            {% if st == 'all' %}
+            <table class="table table-bordered shadow">
+                <thead>
+                    <tr>
+                        <th class="text-danger">Book Title</th>
+                        <th class="text-danger">Issue Date</th>
+                        <th class="text-danger">ERD</th>
+                        <th class="text-danger">Return Date</th>
+                        <th class="text-danger text-center">Return Status</th>
+                    </tr>
+                </thead>
+                {% for pk in profileBook %}
+                <tbody>
+                    <tr>
+                        <th class="text-capitalize">{{ pk.book.book_title }}</th>
+                        <th class="text-capitalize">{{ pk.issue_date }}</th>
+                        <th class="text-capitalize">{{ pk.estimated_return_date }}</th>
+                        <th class="text-capitalize">{{ pk.return_date }}</th>
+                        <th class="text-capitalize text-center">
+                            {% if pk.return_status == 'pending' %}
+                            {% if pk.book.book_quantity != 0 %}
+                            <button class="btn btn-success py-1 px-4" data-toggle="modal"
+                                data-target="#Renew{{ pk.book }}">Renew Book</button>
+                            <button class="btn btn-primary py-1 px-4" data-toggle="modal"
+                                data-target="#Return{{ pk.book }}">Return Book</button>
+                            {% else %}
+                            <button class="btn btn-primary py-1 px-4" data-toggle="modal"
+                                data-target="#Return{{ pk.book }}">Return Book</button>
+                            {% endif %}
+                            {% else %}
+                            <button class="btn btn-danger danger-1 px-4" data-toggle="modal"
+                            data-target="#Reissue{{ pk.book }}">Re-Issue</button>
+                            {% endif %}
+                        </th>
+                    </tr>
+                </tbody>
+                <!-- Modal Renew -->
+                <div class="modal fade" id="Renew{{ pk.book }}" tabindex="-1" role="dialog"
+                    aria-labelledby="RenewModel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-primary" id="exampleModalLongTitle">Renew Book {{ pk.book }}
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-                            <div class="col text-center pb-2">
-                                <p style="color: #7b00ff!important;text-decoration: none;">Author - {{ book.book_author }}</p>
-                                <a href="/book/{{ book.id }}/{{ book.book_title }}" class="mt-2" style="color: #4285f4!important;">Available Quantity - {{ book.book_quantity }}<i
-                                        class="fa fa-arrow-right text-primary ml-2"></i></a>
+                            <div class="modal-body">
+                                <div class="col text-danger h6">
+                                    Are you sure, you want to renew the book {{ pk.book }} for {{ foamUser.username }}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <a href="/book/renew/{{ pk.book_id }}" class="btn btn-primary">Save changes</a>
                             </div>
                         </div>
                     </div>
+                </div>
+                <!-- Return Model -->
+                <div class="modal fade" id="Return{{ pk.book }}" tabindex="-1" role="dialog"
+                    aria-labelledby="ReturnModel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-primary" id="exampleModalLongTitle">Return Book {{ pk.book }}
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col text-danger h6">
+                                    Are you sure, you want to return the book {{ pk.book }} for {{ foamUser.username }}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>     
+                                <a href="/book/return/{{ pk.book_id }}" class="btn btn-primary">Save changes</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Reissue Model -->
+                <div class="modal fade" id="Reissue{{ pk.book }}" tabindex="-1" role="dialog"
+                    aria-labelledby="ReissueModel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-primary" id="exampleModalLongTitle">Re-Issue Book {{ pk.book }}
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col text-danger h6">
+                                    Are you sure, you want to re-issue the book {{ pk.book }}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <a href="/book/checkOut/{{ pk.book_id }}" class="btn btn-primary">Save changes</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </table>
+            {% elif st == 'pending' %}
+            <table class="table table-bordered shadow">
+                <thead>
+                    <tr>
+                        <th class="text-danger">Book Title</th>
+                        <th class="text-danger">Issue Date</th>
+                        <th class="text-danger">ERD</th>
+                        <th class="text-danger">Return Date</th>
+                        <th class="text-danger text-center">Return Status</th>
+                    </tr>
+                </thead>
+                {% for pk in profileBook %}
+                {% if pk.return_status == 'pending' %}
+                <tbody>
+                    <tr>
+                        <th class="text-capitalize">{{ pk.book }}</th>
+                        <th class="text-capitalize">{{ pk.issue_date }}</th>
+                        <th class="text-capitalize">{{ pk.estimated_return_date }}</th>
+                        <th class="text-capitalize">{{ pk.return_date }}</th>
+                        <th class="text-capitalize text-center">
+                            <button class="btn btn-success py-1 px-4" data-toggle="modal"
+                                data-target="#Renew{{ pk.book }}">Renew Book</button>
+                            <button class="btn btn-primary py-1 px-4" data-toggle="modal"
+                                data-target="#Return{{ pk.book }}">Return Book</button>
+                        </th>
+                    </tr>
+                </tbody>
+                <!-- Modal Renew -->
+                <div class="modal fade" id="Renew{{ pk.book }}" tabindex="-1" role="dialog"
+                    aria-labelledby="RenewModel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-primary" id="exampleModalLongTitle">Renew Book {{ pk.book }}
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col text-danger h6">
+                                    Are you sure, you want to renew the book {{ pk.book }} for {{ foamUser.username }}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <a href="/book/renew/{{ pk.book_id }}" class="btn btn-primary">Save changes</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Return Model -->
+                <div class="modal fade" id="Return{{ pk.book }}" tabindex="-1" role="dialog"
+                    aria-labelledby="ReturnModel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-primary" id="exampleModalLongTitle">Return Book {{ pk.book }}
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col text-danger h6">
+                                    Are you sure, you want to return the book {{ pk.book }} for {{ foamUser.username }}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>     
+                                <a href="/book/return/{{ pk.book_id }}" class="btn btn-primary">Save changes</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </table>
+            {% elif st == 'returned' %}
+            <table class="table table-bordered shadow">
+                <thead>
+                    <tr>
+                        <th class="text-danger">Book Title</th>
+                        <th class="text-danger">Issue Date</th>
+                        <th class="text-danger">ERD</th>
+                        <th class="text-danger">Return Date</th>
+                        <th class="text-danger text-center">Return Status</th>
+                    </tr>
+                </thead>
+                {% for pk in profileBook %}
+                {% if pk.return_status == 'returned' %}
+                <tbody>
+                    <tr>
+                        <th class="text-capitalize">{{ pk.book }}</th>
+                        <th class="text-capitalize">{{ pk.issue_date }}</th>
+                        <th class="text-capitalize">{{ pk.estimated_return_date }}</th>
+                        <th class="text-capitalize">{{ pk.return_date }}</th>
+                        <th class="text-capitalize text-center">
+                            {% if pk.book.book_quantity == 0 %}
+                            <a href="/book/reserve/user/{{ pk.book_id }}" class="btn btn-success py-1 px-4">Reserve</a>
+                            {% else %}
+                            <button class="btn btn-danger py-1 px-4"  data-toggle="modal"
+                            data-target="#Reissue{{ pk.book }}">Re-Issue</button>
+                            {% endif %}
+                        </th>
+                    </tr>
+                </tbody>
+                <!-- Reissue Model -->
+                <div class="modal fade" id="Reissue{{ pk.book }}" tabindex="-1" role="dialog"
+                    aria-labelledby="ReissueModel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-primary" id="exampleModalLongTitle">Re-Issue Book {{ pk.book }}
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col text-danger h6">
+                                    Are you sure, you want to re-issue the book {{ pk.book }}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <a href="/book/checkOut/{{ pk.book_id }}" class="btn btn-primary">Save changes</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% elif st == 'withFine' %}
+                <table class="table table-bordered shadow">
+                    <thead>
+                        <tr>
+                            <th class="text-danger">Book Title</th>
+                            <th class="text-danger">Issue Date</th>
+                            <th class="text-danger">ERD</th>
+                            <th class="text-danger">Return Date</th>
+                            <th class="text-danger">Return Status</th>
+                            <th class="text-danger">Fine</th>
+                        </tr>
+                    </thead>
+
+                    {% for fn in fineBook %}
+                    {% if fn.fine != 0 %}
+                    <tbody>
+                        <tr>
+                            <th class="text-capitalize">{{ fn.loan.book }}</th>
+                            <th class="text-capitalize">{{ fn.loan.issue_date }}</th>
+                            <th class="text-capitalize">{{ fn.loan.estimated_return_date }}</th>
+                            <th class="text-capitalize">{{ fn.loan.return_date }}</th>
+                            <th class="text-capitalize">{{ fn.loan.return_status }}</th>
+                            <th class="text-capitalize"> <a href="" class="btn btn-danger py-1 px-3 ">Pay Fine ₹{{ fn.fine }}/- </a></th>
+                        </tr>
+                    </tbody>
                     {% endif %}
-                {% endfor %}   
-            {% endfor %}
+                    {% endfor %}
+                    {% endif %}
+                </table>
         </div>
     </div>
 </div>

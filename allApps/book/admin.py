@@ -12,7 +12,7 @@ class book(admin.ModelAdmin):
 @admin.register(bookLoanDetail)
 class bookLoanDetail(admin.ModelAdmin):
     search_fields = ['user', 'book']
-    list_display = ("user", "book", "issue_date", "return_date", "return_status")
+    list_display = ("user", "book", "issue_date", "return_date", "estimated_return_date", "return_status")
 
 
 admin.site.register(bookReservation)

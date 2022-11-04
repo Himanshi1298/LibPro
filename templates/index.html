@@ -71,7 +71,7 @@
 </section>
 
 
-<section class="container-fluid mt-5">
+<section class="container-fluid mt-5 pb-5">
     <div class="custom-container mx-auto mt-4">
         <div class="col text-center">
             <h1 class="head-h1-text">Trending Books</h1>
@@ -79,19 +79,22 @@
         <div class="mx-auto row mt-5">
             {% for bk in book %}
             <div class="col-md-4 col-lg-3 mt-5  text-center">
+                <a href="/book/{{ bk.id }}/{{ bk.book_title }}">
                 <div class="card border-0 UNIKCARD h-100 p-2 pt-4" style="border-radius: 8px;">
                     <div class="col text-center">
-                        <img class="img-fluid" style="height:280px" src="/media/{{ bk.book_image }}" alt="">
+                        <img class="img-fluid set-280" src="/media/{{ bk.book_image }}" alt="">
                         <h5 class="mt-4 text-danger">{{ bk.book_title }}</h5>
-                        <p class="mt-2">{{ bk.book_desc }}</p>
+                        <p class="mt-2" style="color:#000!important">{{ bk.book_desc }}</p>
                     </div>
                     <div class="col text-center pb-2">
+                        <img class="img-fluid" style="height:100px" src="/media/{{ bk.book_barcode }}" alt="{{ bk.book_title }}">
                         <!-- https://www.ncbi.nlm.nih.gov/books/NBK92477/ -->
-                        <p style="color: #7b00ff!important;text-decoration: none;">Author - {{ bk.book_author }}</p>
+                        <p class="mt-2" style="color: #7b00ff!important;text-decoration: none;">Author - {{ bk.book_author }}</p>
                         <a href="/book/{{ bk.id }}/{{ bk.book_title }}" class="mt-2" style="color: #4285f4!important;">Available Quantity - {{ bk.book_quantity }}<i
                                 class="fa fa-arrow-right text-primary ml-2"></i></a>
                     </div>
                 </div>
+            </a>
             </div>
             {% endfor %}
             <!--  -->

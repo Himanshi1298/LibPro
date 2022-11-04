@@ -1,3 +1,4 @@
+from pickle import NONE
 from unicodedata import category
 from django.contrib import auth
 from django.contrib.auth.forms import UsernameField
@@ -50,6 +51,11 @@ def resetPass(request, auth_token):
 
 @login_required(login_url='login')
 def home(request):
+    user = request.user
+    if user.is_superuser:
+        messages.info(request, 'Please Login Through Admin Panel Or Create New General User')
+        return redirect('login')
+
     brk = book.objects.all().order_by('book_publication_date')
     form = curdBookForm()
     context = {
@@ -60,6 +66,10 @@ def home(request):
 
 @login_required(login_url='login')
 def bookSearch(request):
+    user = request.user
+    if user.is_superuser:
+        messages.info(request, 'Please Login Through Admin Panel Or Create New General User')
+        return redirect('login')
     bookToSearch = request.GET['query']
     lookups = Q(book_title__icontains = bookToSearch) | Q(book_author__icontains = bookToSearch)
     bk = book.objects.filter(lookups)
@@ -124,19 +134,43 @@ def registerUser(request):
     context = {'form':form, 'form2':form2}
     return render(request, "registration.html", context)
 
+def calculateFine(user):
+    loanBook = bookLoanDetail.objects.all().filter(user_id = user.id)
+    for loan in loanBook:
+        d1 = loan.issue_date
+        d2 = loan.return_date
+        d3 = loan.estimated_return_date
+        d4 = date.today()
+        d5 = (d4 - d3)
+        try:
+            fineBook = bookFine.objects.get(loan_id = loan.id) 
+        except:
+            fineBook = None
+
+        
+        if d2 == None:
+            if int(d5.days) > 0 and fineBook == None:
+                fn = bookFine(loan_id = loan.id, fine = 5, user_id = user.id)
+                fn.save()
+
+        elif d2 != None and fineBook == None:
+            d6 = d2 - d1
+            if int(d6.days) > 10:
+                fn = bookFine(loan_id = loan.id, fine = 5, user_id = user.id)
+                fn.save()
+
+
 def loginUser(request):
-    if request.method == 'POST':
+    if request.method == 'POST': 
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         # userProfile = userProfiles.objects.filter(user = user.id).first()
         if user is not None:
-            userId = user.id
-            isActive = user.is_active
-            isAdmin = user.is_superuser
-            if isAdmin:
+            if user.is_superuser:
                 messages.info(request, 'Please Login Through Admin Panel Or Create New General User')
-            elif isActive:
+            elif user.is_active:
+                calculateFine(user)
                 login(request, user)
                 return redirect('home')     
             else:
@@ -155,7 +189,12 @@ def logoutUser(request):
 
 # @login_required(login_url='login')
 @login_required(login_url='login')
-def profilePg(request):
+def profilePg(request, st):
+    user = request.user
+    if user.is_superuser:
+        messages.info(request, 'Please Login Through Admin Panel Or Create New General User')
+        return redirect('login')
+
     pgUser      = User.objects.get(pk = request.user.id)
     profileUser = userProfiles.objects.get(user = pgUser)
     userLink    = userlinks.objects.get(user = pgUser)
@@ -176,7 +215,8 @@ def profilePg(request):
                 # print(profileUser.user_profile_image)
             pgUser.save()
             profileUser.save()
-            return redirect('profile')
+            return redirect('profile', 'all')
+
         if form2Name == 'link-form':
             userLink.user    = request.user     
             userLink.website = request.POST.get('website')
@@ -184,9 +224,10 @@ def profilePg(request):
             userLink.twitter = request.POST.get('twitter')
             userLink.linkdin = request.POST.get('linkdin')
             userLink.save()
-            return redirect('profile')
+            return redirect('profile', 'all')
 
     postImg = userProfiles.objects.all()
+    fineBook = bookFine.objects.all().filter(user_id = user.id)
     user = request.user
     profileBook = bookLoanDetail.objects.all().filter(user_id = user.id)
     bk = book.objects.all()
@@ -194,7 +235,9 @@ def profilePg(request):
     context = {
         'postImg'     : postImg,
         'profileBook' : profileBook,
+        'fineBook'    : fineBook,
         'bk'          : bk,
+        'st'          : st,
         'form'        : form,
         'form2'       : form2,
         'form3'       : form3,
